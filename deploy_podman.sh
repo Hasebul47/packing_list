@@ -2,7 +2,7 @@
 set -e
 
 APP_NAME="packing-list"
-IMAGE_NAME="packing-list-a-app:latest"
+IMAGE_NAME="packing-list-app:latest"
 HOST_PORT="8002"
 CONTAINER_PORT="8002"
 

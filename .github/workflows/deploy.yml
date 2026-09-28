@@ -1,4 +1,4 @@
-name: Deploy PO Automation
+name: Deploy Packing List App
 
 on:
   push:
@@ -19,10 +19,10 @@ jobs:
           script_stop: true
           script: |
             cd ${{ secrets.PROJECT_PATH }}
-            git remote set-url origin https://x-access-token:${{ github.token }}@github.com/Hasebul47/Document_RPA.git || true
+            git remote set-url origin https://x-access-token:${{ github.token }}@github.com/Hasebul47/packing_list.git || true
             git fetch origin main
             git reset --hard origin/main
-            podman build -t po-automation-web .
-            podman stop po-automation-web || true
-            podman rm po-automation-web || true
-            podman run -d --name po-automation-web -p 8501:8501 po-automation-web
+            podman build -t packing-list-app .
+            podman stop packing-list || true
+            podman rm packing-list || true
+            podman run -d --name packing-list --restart unless-stopped -p 8002:8002 packing-list-app

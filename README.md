@@ -17,7 +17,7 @@ chmod +x deploy_podman.sh
 
 #### 1. Build the image
 ```bash
-podman build -t packing-list-a-app:latest .
+podman build -t packing-list-app:latest .
 ```
 
 #### 2. Run the container on port 8002
@@ -29,7 +29,7 @@ podman run -d \
   -e STREAMLIT_SERVER_PORT=8002 \
   -e STREAMLIT_SERVER_HEADLESS=true \
   -e STREAMLIT_BROWSER_GATHER_USAGE_STATS=false \
-  packing-list-a-app:latest
+  packing-list-app:latest
 ```
 
 #### 3. Verify container status and logs
