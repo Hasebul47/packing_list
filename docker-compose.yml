@@ -4,7 +4,7 @@ services:
     image: packing-list-app:latest
     container_name: packing-list
     ports:
-      - "8002:8002"           # ← host 8002 → container 8002
+      - "8002:8002" # ← host 8002 → container 8002 
     volumes:
       - /u01/certs:/certs:ro
     restart: unless-stopped
