@@ -17,3 +17,4 @@ ENV/
 *.key
 *.pub
 id_*
+README.md
