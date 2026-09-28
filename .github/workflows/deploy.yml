@@ -18,11 +18,17 @@ jobs:
           port: ${{ secrets.SSH_PORT || 22 }}
           script_stop: true
           script: |
-            cd ${{ secrets.PROJECT_PATH }}
+            mkdir -p "${{ secrets.PROJECT_PATH }}"
+            git config --global --add safe.directory "${{ secrets.PROJECT_PATH }}" || true
+            cd "${{ secrets.PROJECT_PATH }}"
+            if [ ! -d ".git" ]; then
+              git init
+              git remote add origin https://x-access-token:${{ github.token }}@github.com/Hasebul47/packing_list.git
+            fi
             git remote set-url origin https://x-access-token:${{ github.token }}@github.com/Hasebul47/packing_list.git || true
             git fetch origin main
             git reset --hard origin/main
             podman build -t packing-list-app .
             podman stop packing-list || true
-            podman rm packing-list || true
+            podman rm -f packing-list || true
             podman run -d --name packing-list --restart unless-stopped -p 8002:8002 packing-list-app
