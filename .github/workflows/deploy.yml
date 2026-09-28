@@ -31,4 +31,4 @@ jobs:
             podman build -t packing-list-app .
             podman stop packing-list || true
             podman rm -f packing-list || true
-            podman run -d --name packing-list --restart unless-stopped -p 8002:8002 packing-list-app
+            podman run -d --name packing-list --restart unless-stopped -v /u01/certs:/certs:ro -p 8002:8002 packing-list-app

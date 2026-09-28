@@ -19,15 +19,12 @@ RUN pip install --no-cache-dir --upgrade pip \
 
 # Copy app code
 COPY app.py .
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
 
 EXPOSE 8002
 
-# Streamlit healthcheck (optional but handy)
-HEALTHCHECK CMD curl --fail http://localhost:8002/_stcore/health || exit 1
+# Streamlit healthcheck
+HEALTHCHECK CMD curl --fail -k https://localhost:8002/packing-list/_stcore/health || curl --fail http://localhost:8002/packing-list/_stcore/health || exit 1
 
-# Streamlit needs these flags to run correctly inside a container
-ENTRYPOINT ["streamlit", "run", "app.py", \
-    "--server.port=8002", \
-    "--server.address=0.0.0.0", \
-    "--server.headless=true", \
-    "--browser.gatherUsageStats=false"]
+ENTRYPOINT ["/app/entrypoint.sh"]
