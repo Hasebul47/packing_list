@@ -1,0 +1,28 @@
+name: Deploy PO Automation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME || secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY || secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script_stop: true
+          script: |
+            cd ${{ secrets.PROJECT_PATH }}
+            git remote set-url origin https://x-access-token:${{ github.token }}@github.com/Hasebul47/Document_RPA.git || true
+            git fetch origin main
+            git reset --hard origin/main
+            podman build -t po-automation-web .
+            podman stop po-automation-web || true
+            podman rm po-automation-web || true
+            podman run -d --name po-automation-web -p 8501:8501 po-automation-web
